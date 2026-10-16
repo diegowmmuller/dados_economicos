@@ -6,6 +6,7 @@ import IncomeChart from './components/incomeChart';
 import InformalityChart from './components/informalityChart';
 import EducationChart from './components/educationChart';
 import InvestimentoFederalChart from './components/federalInvestmentChart';
+import TaxaPobrezaChart from './components/taxaPobrezaChart';
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
         <InformalityChart />
         <EducationChart />
         <InvestimentoFederalChart />
+        <TaxaPobrezaChart />
       </div>
     </main>
   );

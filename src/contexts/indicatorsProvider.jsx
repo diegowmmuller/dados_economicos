@@ -7,6 +7,7 @@ import {
   buscarInformalidade,
   buscarDespesasEducacao,
   buscarInvestimentoPublico,
+  buscarTaxaPobreza,
 } from '../services/api';
 import { IndicatorsContext } from './indicatorsContext';
 
@@ -19,6 +20,7 @@ export function IndicatorsProvider({ children }) {
     informalidade: [],
     educacao: [],
     investimentoFederal: [],
+    taxaPobreza: [],
   });
 
   const [loading, setLoading] = useState({
@@ -29,6 +31,7 @@ export function IndicatorsProvider({ children }) {
     informalidade: true,
     educacao: true,
     investimentoFederal: true,
+    taxaPobreza: true,
   });
 
   const [errors, setErrors] = useState({
@@ -39,6 +42,7 @@ export function IndicatorsProvider({ children }) {
     informalidade: null,
     educacao: null,
     investimentoFederal: null,
+    taxaPobreza: null,
   });
 
   useEffect(() => {
@@ -137,7 +141,7 @@ export function IndicatorsProvider({ children }) {
         console.error('Erro ao carregar o rendimento medio:', error);
         setErrors((current) => ({
           ...current,
-          ipca: 'Não foi possível carregar o rendimento medio.',
+          rendimentoMedio: 'Não foi possível carregar o rendimento medio.',
         }));
       } finally {
         if (!controller.signal.aborted) {
@@ -223,6 +227,35 @@ export function IndicatorsProvider({ children }) {
       }
     }
 
+    async function carregarTaxaPobreza() {
+      try {
+        const dados = await buscarTaxaPobreza(controller.signal);
+
+        setIndicators((prev) => ({
+          ...prev,
+          taxaPobreza: dados,
+        }));
+      } catch (error) {
+        if (controller.signal.aborted || error.code === 'ERR_CANCELED') {
+          return;
+        }
+
+        console.error('Erro ao carregar a taxa de pobreza:', error);
+
+        setErrors((prev) => ({
+          ...prev,
+          taxaPobreza: 'Não foi possível carregar a taxa de pobreza.',
+        }));
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading((prev) => ({
+            ...prev,
+            taxaPobreza: false,
+          }));
+        }
+      }
+    }
+
     carregarPib();
     carregarDesemprego();
     carregarIpca();
@@ -230,6 +263,7 @@ export function IndicatorsProvider({ children }) {
     carregarInformalidade();
     carregarEducacao();
     carregarInvestimentoFederal();
+    carregarTaxaPobreza();
 
     return () => controller.abort();
   }, []);

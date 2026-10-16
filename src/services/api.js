@@ -11,6 +11,7 @@ const urls = {
   rendimentoMedio: '/t/5440/n1/1/p/201901-202602',
   informalidade: '/t/8529/n1/1/v/12466/p/201901-202602',
   dividaPublica: 'https://api.bcb.gov.br/dados/serie/bcdata.sgs.13762',
+  taxaPobreza: '/t/10662/n1/1/v/14137/p/2019-2024/c86/95251',
 };
 
 function converterValor(valor) {
@@ -108,5 +109,16 @@ export function buscarInvestimentoPublico() {
     { ano: 2023, real: 81.37 },
     { ano: 2024, real: 86.1 },
     { ano: 2025, real: 83.41 },
+  ];
+}
+
+export async function buscarTaxaPobreza() {
+  return [
+    { ano: 2019, taxa: 32.6 },
+    { ano: 2020, taxa: 31.1 },
+    { ano: 2021, taxa: 36.8 },
+    { ano: 2022, taxa: 31.6 },
+    { ano: 2023, taxa: 27.3 },
+    { ano: 2024, taxa: 23.1 },
   ];
 }
